@@ -49,7 +49,7 @@ export default function FilterTable() {
       setTotalRows(total_entries);
       setTotalPages(total_pages);
     }
-  }, [name, locations, companies, searchData]);
+  }, [name, locations, companies, searchData, setTotalPages, setTotalRows]);
 
   return (
     <Flex w="80vw" h="90vh" flexDir="column">

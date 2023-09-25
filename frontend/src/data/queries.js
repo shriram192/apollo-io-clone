@@ -106,7 +106,7 @@ export const searchPeople = async (
       return {
         success: true,
         data: output,
-        pagination: result.data.data.pagination,
+        pagination,
       };
     }
     return {

@@ -1,18 +1,12 @@
 import { Flex, IconButton, Text, Select } from "@chakra-ui/react";
 import React from "react";
 import { useFilter } from "../store/filter";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@chakra-ui/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 export default function Pagination() {
   const page = useFilter((state) => state.page);
   const per_page = useFilter((state) => state.per_page);
   const total_rows = useFilter((state) => state.total_rows);
-  const total_pages = useFilter((state) => state.total_pages);
 
   const setPage = useFilter((state) => state.setPage);
 

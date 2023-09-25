@@ -3,7 +3,7 @@ import { create } from "zustand";
 export const useFilter = create((set) => ({
   name: "",
   page: 1,
-  per_page: 20,
+  per_page: 25,
   total_rows: 0,
   total_pages: 0,
 

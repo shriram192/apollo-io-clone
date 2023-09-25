@@ -18,7 +18,6 @@ export const searchPeople = async (
     q_person_name: name,
     display_mode: "explorer_mode",
     ui_finder_random_seed: "bhju00f1fea",
-    context: "people-index-page",
     page,
     per_page,
   };

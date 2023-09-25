@@ -7,14 +7,20 @@ const TAG_LOCATION_PATH = "/tag/location";
 const TAG_ORGANIZATION_PATH = "/tag/organization";
 const SEARCH_SNIPPETS_PATH = "/search/snippet";
 
-export const searchPeople = async (name, locations, companies) => {
-  console.log(name, locations, companies);
-
+export const searchPeople = async (
+  name,
+  locations,
+  companies,
+  page,
+  per_page
+) => {
   const body = {
     q_person_name: name,
     display_mode: "explorer_mode",
     ui_finder_random_seed: "bhju00f1fea",
     context: "people-index-page",
+    page,
+    per_page,
   };
 
   if (locations.length > 0) {
@@ -45,7 +51,7 @@ export const searchPeople = async (name, locations, companies) => {
 
     if (result.status === 200) {
       let output = [];
-      const { people, contacts } = result.data.data;
+      const { people, contacts, pagination } = result.data.data;
 
       people.forEach((item) => {
         output.push({
@@ -59,10 +65,7 @@ export const searchPeople = async (name, locations, companies) => {
           contactLocation:
             item.city !== null ? item.city + ", " + item.state : "Unknown",
           companyId: item.organization_id,
-          employee_no: 0,
           email: item.email !== null ? item.email : "Unknown",
-          industry: "",
-          keywords: "",
         });
       });
 
@@ -78,27 +81,32 @@ export const searchPeople = async (name, locations, companies) => {
           contactLocation:
             item.city !== null ? item.city + ", " + item.state : "Unknown",
           companyId: item.organization_id,
-          employee_no: 0,
           email: item?.email !== null ? item.email : "Unknown",
-          industry: "",
-          keywords: "",
         });
       });
 
-      const org_ids = output.map((item) => ({
-        id: item.id,
-        companyId: item.companyId,
-      }));
-
       const org_data = await searchOrgSnippets(
-        org_ids.map((item) => item.companyId)
+        output.map((item) => item.companyId)
       );
 
-      console.log("Organization_Data: ", org_data);
+      if (org_data.success) {
+        output = output.map((item) => {
+          const orgItem = org_data.data.data.organizations.find(
+            (orgItem) => item.companyId === orgItem.id
+          );
+          return {
+            ...item,
+            industry: orgItem.industry,
+            keywords: orgItem.keywords.toString(),
+            employee_no: orgItem.estimated_num_employees,
+          };
+        });
+      }
 
       return {
         success: true,
         data: output,
+        pagination: result.data.data.pagination,
       };
     }
     return {
@@ -218,7 +226,6 @@ export const searchOrgSnippets = async (ids) => {
 
   try {
     const result = await axios.post(BASE_URL + SEARCH_SNIPPETS_PATH, body);
-    console.log(result);
 
     if (result.status === 200) {
       return {

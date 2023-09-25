@@ -19,7 +19,7 @@ export default function SearchPanel() {
         <InputLeftElement py={3} pointerEvents="none">
           <SearchIcon color="gray.300" />
         </InputLeftElement>
-        <Input py={3} variant="flushed" placeholder="Search People" />
+        <Input py={3} variant="flushed" placeholder="Search Companies" />
       </InputGroup>
       <Text px={4} py={3} color="black" fontWeight="bolder">
         Filters

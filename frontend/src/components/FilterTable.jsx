@@ -33,21 +33,33 @@ export default function FilterTable() {
   const locations = useFilter((state) => state.location_list);
   const companies = useFilter((state) => state.company_list);
   const per_page = useFilter((state) => state.per_page);
+  const page = useFilter((state) => state.page);
 
-  const searchData = useQuery(["search", name, locations, companies], () =>
-    searchPeople(name, locations, companies)
+  const setTotalRows = useFilter((state) => state.setTotalRows);
+  const setTotalPages = useFilter((state) => state.setTotalPages);
+
+  const searchData = useQuery(
+    ["search", name, locations, companies, page, per_page],
+    () => searchPeople(name, locations, companies, page, per_page)
   );
 
   useEffect(() => {
-    console.log("Name: ", name);
-    console.log("Locations: ", locations);
-    console.log("Companies: ", companies);
-    console.log("Search Data: ", searchData);
+    if (searchData.isSuccess && searchData.data && searchData.data.pagination) {
+      const { total_entries, total_pages } = searchData?.data?.pagination;
+      setTotalRows(total_entries);
+      setTotalPages(total_pages);
+    }
   }, [name, locations, companies, searchData]);
 
   return (
-    <Flex w="80vw" h="85vh" bg={"gray.100"} flexDir="column" overflowX="scroll">
-      <>
+    <Flex w="80vw" h="90vh" flexDir="column">
+      <Flex
+        w="80vw"
+        h="85vh"
+        bg={"gray.100"}
+        flexDir="column"
+        overflowX="scroll"
+      >
         <Table
           style={{ tableLayout: "fixed" }}
           w="80vw"
@@ -58,7 +70,13 @@ export default function FilterTable() {
             <Tr>
               {columns.map((item) => {
                 return (
-                  <Th position="sticky" top="0" bg={"white"} w="15vw">
+                  <Th
+                    key={item}
+                    position="sticky"
+                    top="0"
+                    bg={"white"}
+                    w="15vw"
+                  >
                     {item}
                   </Th>
                 );
@@ -67,8 +85,8 @@ export default function FilterTable() {
           </Thead>
           <Tbody>
             {searchData.isLoading
-              ? Array.apply(null, { length: per_page }).map((e, i) => (
-                  <Skeleton w="80vw" h="5vh" margin={3} />
+              ? Array.apply(null, { length: per_page + 5 }).map((e, i) => (
+                  <Skeleton key={i} w="80vw" h="5vh" margin={3} />
                 ))
               : searchData.isSuccess &&
                 searchData.data.success &&
@@ -82,14 +100,16 @@ export default function FilterTable() {
                       <Td>{row.employee_no}</Td>
                       <Td>{row.email}</Td>
                       <Td>{row.industry}</Td>
-                      <Td>{row.keywords}</Td>
+                      <Td whiteSpace="nowrap" overflow="hidden">
+                        {row.keywords}
+                      </Td>
                     </Tr>
                   );
                 })}
           </Tbody>
         </Table>
-        <Pagination />
-      </>
+      </Flex>
+      <Pagination />
     </Flex>
   );
 }

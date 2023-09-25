@@ -2,9 +2,11 @@ import { create } from "zustand";
 
 export const useFilter = create((set) => ({
   name: "",
-  page: 0,
-  per_page: 10,
-  pages: 0,
+  page: 1,
+  per_page: 20,
+  total_rows: 0,
+  total_pages: 0,
+
   location_list: [],
   company_list: [],
 
@@ -13,7 +15,6 @@ export const useFilter = create((set) => ({
 
   changeLocationOptions: (newValue) =>
     set((state) => {
-      console.log("Location tags: ", newValue);
       if (newValue.success) {
         return { ...state, locationOptions: newValue.data };
       }
@@ -22,7 +23,6 @@ export const useFilter = create((set) => ({
 
   changeCompanyOptions: (newValue) =>
     set((state) => {
-      console.log("Company tags: ", newValue);
       if (newValue.success) {
         return {
           ...state,
@@ -44,8 +44,11 @@ export const useFilter = create((set) => ({
     }),
 
   setName: (newValue) => set((state) => ({ ...state, name: newValue })),
-  setPerPage: (newValue) => set((state) => ({ ...state, per_page: newValue })),
   setPage: (newValue) => set((state) => ({ ...state, page: newValue })),
+  setTotalRows: (newValue) =>
+    set((state) => ({ ...state, total_rows: newValue })),
+  setTotalPages: (newValue) =>
+    set((state) => ({ ...state, total_pages: newValue })),
 
   setLocationList: (newValue) =>
     set((state) => {

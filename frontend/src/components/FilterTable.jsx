@@ -17,6 +17,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Skeleton,
 } from "@chakra-ui/react";
 import {
   ArrowRightIcon,
@@ -27,6 +28,7 @@ import {
 import { useFilter } from "../store/filter";
 import { useQuery } from "@tanstack/react-query";
 import { searchPeople } from "../data/queries";
+import Pagination from "./Pagination";
 
 export default function FilterTable() {
   const columns = React.useMemo(
@@ -46,6 +48,8 @@ export default function FilterTable() {
   const name = useFilter((state) => state.name);
   const locations = useFilter((state) => state.location_list);
   const companies = useFilter((state) => state.company_list);
+  const per_page = useFilter((state) => state.per_page);
+
   const searchData = useQuery(["search", name, locations, companies], () =>
     searchPeople(name, locations, companies)
   );
@@ -69,29 +73,38 @@ export default function FilterTable() {
           <Thead>
             <Tr>
               {columns.map((item) => {
-                return <Th w="15vw">{item}</Th>;
+                return (
+                  <Th position="sticky" top="0" bg={"white"} w="15vw">
+                    {item}
+                  </Th>
+                );
               })}
             </Tr>
           </Thead>
           <Tbody>
-            {searchData.isSuccess &&
-              searchData.data.success &&
-              searchData.data.data.map((row, i) => {
-                return (
-                  <Tr key={i}>
-                    <Td>{row.name}</Td>
-                    <Td>{row.title}</Td>
-                    <Td>{row.company}</Td>
-                    <Td>{row.contactLocation}</Td>
-                    <Td>{row.employee_no}</Td>
-                    <Td>{row.email}</Td>
-                    <Td>{row.industry}</Td>
-                    <Td>{row.keywords}</Td>
-                  </Tr>
-                );
-              })}
+            {searchData.isLoading
+              ? Array.apply(null, { length: per_page }).map((e, i) => (
+                  <Skeleton w="80vw" h="5vh" margin={3} />
+                ))
+              : searchData.isSuccess &&
+                searchData.data.success &&
+                searchData.data.data.map((row, i) => {
+                  return (
+                    <Tr key={row.id}>
+                      <Td>{row.name}</Td>
+                      <Td>{row.title}</Td>
+                      <Td>{row.company}</Td>
+                      <Td>{row.contactLocation}</Td>
+                      <Td>{row.employee_no}</Td>
+                      <Td>{row.email}</Td>
+                      <Td>{row.industry}</Td>
+                      <Td>{row.keywords}</Td>
+                    </Tr>
+                  );
+                })}
           </Tbody>
         </Table>
+        <Pagination />
       </>
     </Flex>
   );

@@ -22,7 +22,7 @@ export const searchPeople = async (name, locations, companies) => {
   }
 
   if (companies.length > 0) {
-    body.organization_id = companies.map((item) => item.key);
+    body.organization_ids = companies.map((item) => item.key);
   }
 
   console.log("Body: ", body);
@@ -45,19 +45,20 @@ export const searchPeople = async (name, locations, companies) => {
 
     if (result.status === 200) {
       let output = [];
-
       const { people, contacts } = result.data.data;
 
       people.forEach((item) => {
         output.push({
-          name: item.name,
-          title: item.title,
+          id: item.id,
+          name: item.name !== null ? item.name : "Unknown",
+          title: item.title !== null ? item.title : "Unknown",
           company:
-            item?.organization?.name !== null
+            item.organization && item.organization.name !== null
               ? item.organization.name
               : "Unknown",
           contactLocation:
             item.city !== null ? item.city + ", " + item.state : "Unknown",
+          companyId: item.organization_id,
           employee_no: 0,
           email: item.email !== null ? item.email : "Unknown",
           industry: "",
@@ -67,20 +68,27 @@ export const searchPeople = async (name, locations, companies) => {
 
       contacts.forEach((item) => {
         output.push({
-          name: item?.name,
-          title: item.title,
+          id: item.id,
+          name: item.name !== null ? item.name : "Unknwon",
+          title: item.title !== null ? item.title : "Unknown",
           company:
-            item?.organization?.name !== null
+            item.organization && item.organization.name !== null
               ? item.organization.name
               : "Unknown",
           contactLocation:
             item.city !== null ? item.city + ", " + item.state : "Unknown",
+          companyId: item.organization_id,
           employee_no: 0,
           email: item?.email !== null ? item.email : "Unknown",
           industry: "",
           keywords: "",
         });
       });
+
+      const org_ids = output.map((item) => ({
+        id: item.id,
+        companyId: item.companyId,
+      }));
 
       return {
         success: true,

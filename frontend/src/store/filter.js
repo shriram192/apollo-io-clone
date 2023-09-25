@@ -4,6 +4,7 @@ export const useFilter = create((set) => ({
   name: "",
   page: 0,
   per_page: 10,
+  pages: 0,
   location_list: [],
   company_list: [],
 

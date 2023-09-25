@@ -1,107 +1,119 @@
-const express = require('express');
-const axios = require('axios');
+const express = require("express");
+const axios = require("axios");
 const router = express.Router();
 
-router.post('/', async (req,res) => {
-  console.log("Initialized Search Function!")
-  console.log("Functon Request body: ",req.body)
+router.post("/", async (req, res) => {
+  console.log("Initialized Search Function!");
+  console.log("Functon Request body: ", req.body);
 
-  if(!(req.body['q_person_name'] || req.body['person_locations'] || req.body['organization_ids'])) {
-   return res.status(400).json({
-      message: "Invalid API Input, does not contain the required fields!"
-    })
+  if (
+    !(
+      req.body.hasOwnProperty("q_person_name") ||
+      req.body.hasOwnProperty("person_locations") ||
+      req.body.hasOwnProperty("organization_ids")
+    )
+  ) {
+    return res.status(400).json({
+      message: "Invalid API Input, does not contain the required fields!",
+    });
   }
 
   try {
-    const request_body = { ...req.body, api_key: process.env.API_KEY }
-    console.log("API Request Body: ", request_body)
+    const request_body = { ...req.body, api_key: process.env.API_KEY };
+    console.log("API Request Body: ", request_body);
 
-    const result = await axios.post(process.env.PEOPLE_URL, request_body)
-    console.log("API Response: ", result.data)
+    const result = await axios.post(process.env.PEOPLE_URL, request_body);
+    console.log("API Response: ", result.data);
 
     if (result.status === 200) {
       return res.status(200).json({
-        data: result.data
-      })
+        data: result.data,
+      });
     } else {
       return res.status(500).json({
-        message: "API Failed to return data!"
-      })
+        message: "API Failed to return data!",
+      });
     }
-  } catch(e) {
-    console.log("API Call post error", e)
+  } catch (e) {
+    console.log("API Call post error", e);
     return res.status(500).json({
-      message: "Server failed to get data from API!"
-    })
+      message: "Server failed to get data from API!",
+    });
   }
 });
 
-router.post('/meta-data', async (req,res) => {
-  console.log("Initialized Meta Data Function!")
-  console.log("Functon Request body: ",req.body)
+router.post("/meta-data", async (req, res) => {
+  console.log("Initialized Meta Data Function!");
+  console.log("Functon Request body: ", req.body);
 
-  if(!(req.body['q_person_name'] || req.body['person_locations'] || req.body['organization_ids'])) {
+  if (
+    !(
+      req.body.hasOwnProperty("q_person_name") ||
+      req.body.hasOwnProperty("person_locations") ||
+      req.body.hasOwnProperty("organization_ids")
+    )
+  ) {
     return res.status(400).json({
-      message: "Invalid API Input, does not contain the required fields!"
-    })
+      message: "Invalid API Input, does not contain the required fields!",
+    });
   }
 
   try {
-    const request_body = { ...req.body, api_key: process.env.API_KEY }
-    console.log("API Request Body: ", request_body)
+    const request_body = { ...req.body, api_key: process.env.API_KEY };
+    console.log("API Request Body: ", request_body);
 
-    const result = await axios.post(process.env.METADATA_URL, request_body)
-    console.log("API Response: ", result.data)
+    const result = await axios.post(process.env.METADATA_URL, request_body);
+    console.log("API Response: ", result.data);
 
     if (result.status === 200) {
       return res.status(200).json({
-        data: result.data
-      })
+        data: result.data,
+      });
     } else {
       return res.status(500).json({
-        message: "API Failed to return data!"
-      })
+        message: "API Failed to return data!",
+      });
     }
-  } catch(e) {
-    console.log("API Call post error", e)
+  } catch (e) {
+    console.log("API Call post error", e);
     return res.status(500).json({
-      message: "Server failed to get data from API!"
-    })
+      message: "Server failed to get data from API!",
+    });
   }
 });
 
-router.post("/snippet", async (req,res) => {
-  console.log("Initialized Snippet Function!")
-  console.log("Functon Request body: ",req.body)
+router.post("/snippet", async (req, res) => {
+  console.log("Initialized Snippet Function!");
+  console.log("Functon Request body: ", req.body);
 
-  if(!req.body['ids']) {
+  if (!req.body.hasOwnProperty("ids")) {
     return res.status(400).json({
-      message: "Invalid API Input, does not contain the required fields!"
-    })
+      message: "Invalid API Input, does not contain the required fields!",
+    });
   }
-  
-  try {
-    const request_body = { ...req.body, api_key: process.env.API_KEY }
-    console.log("API Request Body: ", request_body)
 
-    const result = await axios.post(process.env.SNIPPET_URL, request_body)
-    console.log("API Response: ", result.data)
+  try {
+    const request_body = { ...req.body, api_key: process.env.API_KEY };
+    console.log("API Request Body: ", request_body);
+
+    const result = await axios.post(process.env.SNIPPET_URL, request_body);
+    console.log("API Response: ", result.data);
 
     if (result.status === 200) {
       return res.status(200).json({
-        data: result.data
-      })
+        data: result.data,
+      });
     } else {
       return res.status(500).json({
-        message: "API Failed to return data!"
-      })
+        message: "API Failed to return data!",
+      });
     }
-  } catch(e) {
-    console.log("API Call post error", e)
+  } catch (e) {
+    console.log("API Call post error", e);
     return res.status(500).json({
-      message: "Server failed to get data from API!"
-    })
+      message: "Server failed to get data from API!",
+    });
   }
-})
+});
 
-module.exports = router
+module.exports = router;

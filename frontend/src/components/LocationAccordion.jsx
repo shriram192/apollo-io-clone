@@ -27,10 +27,10 @@ export default function LocationAccordion() {
     if (locationData.isSuccess && !locationData.isLoading) {
       changeLocationOptions(locationData.data);
     }
-  }, [locationData]);
+  }, [locationData, changeLocationOptions]);
 
   const promiseLocations = async (inputValue, callback) => {
-    if (inputValue == "") {
+    if (inputValue === "") {
       callback([]);
     }
     const data = await getLocationTags(inputValue);

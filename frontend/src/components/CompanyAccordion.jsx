@@ -27,10 +27,10 @@ export default function CompanyAccordion() {
     if (companyData.isSuccess && !companyData.isLoading) {
       changeCompanyOptions(companyData.data);
     }
-  }, [companyData]);
+  }, [companyData, changeCompanyOptions]);
 
   const promiseCompany = async (inputValue, callback) => {
-    if (inputValue == "") {
+    if (inputValue === "") {
       callback([]);
     }
     const data = await getOrganizationTags(inputValue);

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useTable, usePagination } from "react-table";
 import {
   Table,
   Thead,
@@ -8,23 +7,8 @@ import {
   Th,
   Td,
   Flex,
-  IconButton,
-  Text,
-  Tooltip,
-  Select,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Skeleton,
 } from "@chakra-ui/react";
-import {
-  ArrowRightIcon,
-  ArrowLeftIcon,
-  ChevronRightIcon,
-  ChevronLeftIcon,
-} from "@chakra-ui/icons";
 import { useFilter } from "../store/filter";
 import { useQuery } from "@tanstack/react-query";
 import { searchPeople } from "../data/queries";
@@ -59,7 +43,7 @@ export default function FilterTable() {
     console.log("Locations: ", locations);
     console.log("Companies: ", companies);
     console.log("Search Data: ", searchData);
-  }, [name, locations, companies]);
+  }, [name, locations, companies, searchData]);
 
   return (
     <Flex w="80vw" h="85vh" bg={"gray.100"} flexDir="column" overflowX="scroll">

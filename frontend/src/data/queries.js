@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://apollo-io-clone.onrender.com";
 
 const SEARCH_PATH = "/search";
 const TAG_LOCATION_PATH = "/tag/location";
@@ -89,6 +89,12 @@ export const searchPeople = async (name, locations, companies) => {
         id: item.id,
         companyId: item.companyId,
       }));
+
+      const org_data = await searchOrgSnippets(
+        org_ids.map((item) => item.companyId)
+      );
+
+      console.log("Organization_Data: ", org_data);
 
       return {
         success: true,
@@ -198,7 +204,11 @@ export const getOrganizationTags = async (company) => {
   }
 };
 
-export const searchOrgSnippets = async (body) => {
+export const searchOrgSnippets = async (ids) => {
+  const body = {
+    ids,
+  };
+
   if (!body.hasOwnProperty("ids")) {
     return {
       success: false,

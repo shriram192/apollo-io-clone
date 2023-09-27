@@ -17,6 +17,7 @@ export default function LocationAccordion() {
   const clearLocationList = useFilter((state) => state.clearLocationList);
   const setLocationList = useFilter((state) => state.setLocationList);
   const locationOptions = useFilter((state) => state.locationOptions);
+  const setPage = useFilter((state) => state.setPage);
 
   const locationData = useQuery(["location", ""], () => getLocationTags(""));
   const changeLocationOptions = useFilter(
@@ -28,6 +29,10 @@ export default function LocationAccordion() {
       changeLocationOptions(locationData.data);
     }
   }, [locationData, changeLocationOptions]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [location_list]);
 
   const promiseLocations = async (inputValue, callback) => {
     if (inputValue === "") {

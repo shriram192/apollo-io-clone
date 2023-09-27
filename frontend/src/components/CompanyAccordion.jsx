@@ -23,11 +23,17 @@ export default function CompanyAccordion() {
 
   const companyData = useQuery(["company", ""], () => getOrganizationTags(""));
 
+  const setPage = useFilter((state) => state.setPage);
+
   useEffect(() => {
     if (companyData.isSuccess && !companyData.isLoading) {
       changeCompanyOptions(companyData.data);
     }
   }, [companyData, changeCompanyOptions]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [company_list]);
 
   const promiseCompany = async (inputValue, callback) => {
     if (inputValue === "") {

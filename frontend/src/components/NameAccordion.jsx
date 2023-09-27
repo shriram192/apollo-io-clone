@@ -6,12 +6,17 @@ import {
   Box,
   Input,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFilter } from "../store/filter";
 
 export default function NameAccordion() {
   const setName = useFilter((state) => state.setName);
   const name = useFilter((state) => state.name);
+  const setPage = useFilter((state) => state.setPage);
+
+  useEffect(() => {
+    setPage(1);
+  }, [name]);
 
   return (
     <>

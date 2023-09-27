@@ -44,7 +44,13 @@ export const useFilter = create((set) => ({
     }),
 
   setName: (newValue) => set((state) => ({ ...state, name: newValue })),
-  setPage: (newValue) => set((state) => ({ ...state, page: newValue })),
+  setPage: (newValue) =>
+    set((state) => {
+      if (newValue >= 1 && newValue < state.total_pages) {
+        return { ...state, page: newValue };
+      }
+      return state;
+    }),
   setTotalRows: (newValue) =>
     set((state) => ({ ...state, total_rows: newValue })),
   setTotalPages: (newValue) =>

@@ -96,7 +96,13 @@ export default function FilterTable() {
           <Tbody>
             {searchData.isLoading
               ? Array.apply(null, { length: per_page + 5 }).map((e, i) => (
-                  <Skeleton key={i} w="80vw" h="5vh" margin={3} />
+                  <Skeleton
+                    key={i}
+                    w="120vw"
+                    overflow="auto"
+                    h="5vh"
+                    margin={3}
+                  />
                 ))
               : searchData.isSuccess &&
                 searchData.data.success &&

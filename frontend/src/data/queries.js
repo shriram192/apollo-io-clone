@@ -55,32 +55,58 @@ export const searchPeople = async (
       people.forEach((item) => {
         output.push({
           id: item.id,
-          name: item.name !== null ? item.name : "Unknown",
-          title: item.title !== null ? item.title : "Unknown",
+          name:
+            item.name !== null && item.city !== undefined
+              ? item.name
+              : "Unknown",
+          title:
+            item.title !== null && item.title !== undefined
+              ? item.title
+              : "Unknown",
           company:
-            item.organization && item.organization.name !== null
+            item.organization &&
+            item.organization.name !== null &&
+            item.organization.name !== undefined
               ? item.organization.name
               : "Unknown",
           contactLocation:
-            item.city !== null ? item.city + ", " + item.state : "Unknown",
+            item.city !== null && item.city !== undefined
+              ? item.city + ", " + item.state
+              : "Unknown",
           companyId: item.organization_id,
-          email: item.email !== null ? item.email : "Unknown",
+          email:
+            item.email !== null && item.email !== undefined
+              ? item.email
+              : "Unknown",
         });
       });
 
       contacts.forEach((item) => {
         output.push({
           id: item.id,
-          name: item.name !== null ? item.name : "Unknwon",
-          title: item.title !== null ? item.title : "Unknown",
+          name:
+            item.name !== null && item.name !== undefined
+              ? item.name
+              : "Unknwon",
+          title:
+            item.title !== null && item.name !== undefined
+              ? item.title
+              : "Unknown",
           company:
-            item.organization && item.organization.name !== null
+            item.organization &&
+            item.organization.name !== null &&
+            item.organization.name !== undefined
               ? item.organization.name
               : "Unknown",
           contactLocation:
-            item.city !== null ? item.city + ", " + item.state : "Unknown",
+            item.city !== null && item.city !== undefined
+              ? item.city + ", " + item.state
+              : "Unknown",
           companyId: item.organization_id,
-          email: item?.email !== null ? item.email : "Unknown",
+          email:
+            item?.email !== null && item.email !== undefined
+              ? item.email
+              : "Unknown",
         });
       });
 

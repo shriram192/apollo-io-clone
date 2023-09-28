@@ -46,10 +46,20 @@ export default function FilterTable() {
   useEffect(() => {
     if (searchData.isSuccess && searchData.data && searchData.data.pagination) {
       const { total_entries, total_pages } = searchData?.data?.pagination;
+      console.log(total_entries);
+      console.log(total_pages);
       setTotalRows(total_entries);
       setTotalPages(total_pages);
     }
-  }, [name, locations, companies, searchData, setTotalPages, setTotalRows]);
+  }, [
+    name,
+    locations,
+    companies,
+    searchData,
+    page,
+    setTotalPages,
+    setTotalRows,
+  ]);
 
   return (
     <Flex w="80vw" h="90vh" flexDir="column">

@@ -121,9 +121,16 @@ export const searchPeople = async (
           );
           return {
             ...item,
-            industry: orgItem.industry,
+            industry:
+              orgItem.industry !== null && orgItem.industry !== undefined
+                ? orgItem.industry
+                : "Unknown",
             keywords: orgItem.keywords.toString(),
-            employee_no: orgItem.estimated_num_employees,
+            employee_no:
+              orgItem.estimated_num_employees !== null &&
+              orgItem.estimated_num_employees !== undefined
+                ? orgItem.estimated_num_employees
+                : "Unknown",
           };
         });
       }
